@@ -35,4 +35,94 @@ export default class Tree {
           this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
         }
     }
+
+    insert(value, node = this.root){
+        if(node == null){
+            return new Node(value);
+        }
+
+        if(value < node.data){
+            node.left = this.insert(value, node.left);
+        }
+        else if(value > node.data){
+            node.right = this.insert(value, node.right);
+        }
+
+        return node;
+    }
+
+    deleteItem(value, node = this.root){
+        if(node == null){
+            return null;
+        }
+
+        if(value < node.data){
+            node.left = this.deleteItem(value, node.left);
+        }
+        else if(value > node.data){
+            node.right = this.deleteItem(value, node.right);
+        }
+        else {
+            // Case 1: Node has no children
+            if(node.left == null && node.right == null){
+                return null;
+            }
+            // Case 2: Node has only one child
+            if(node.left == null){
+                return node.right;
+            }
+            if(node.right == null){
+                return node.left;
+            }
+            // Case 3: Node has two children
+            let succ = this.getSuccessor(node);
+            node.data = succ.data;
+            node.right = this.deleteItem(succ.data, node.right);
+        }
+        return node;
+    }
+
+    getSuccessor(curr){
+        curr = curr.right;
+        while (curr != null && curr.left != null){
+            curr = curr.left;
+        }
+        return curr;
+    }
+
+    find(value){
+
+    }
+
+    levelOrder(callback){
+
+    }
+
+    inOrder(callback){
+
+    }
+
+    preOrder(callback){
+
+    }
+
+    postOrder(callback){
+
+    }
+
+    height(node){
+
+    }
+
+    depth(node){
+
+    }
+
+    isBalanded(){
+
+    }
+
+    rebalance(){
+
+    }
 }

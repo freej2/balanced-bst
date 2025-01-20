@@ -90,8 +90,21 @@ export default class Tree {
         return curr;
     }
 
-    find(value){
+    find(value, node = this.root){
+        if(node === null){
+            return null;
+        }
 
+        if(value === node.data){
+            return node;
+        }
+
+        if(value < node.data){
+            return this.find(value, node.left);
+        }
+        else {
+            return this.find(value, node.right);
+        }
     }
 
     levelOrder(callback){

@@ -128,31 +128,94 @@ export default class Tree {
         }
     }
 
-    inOrder(callback){
-
+    inOrder(callback, node = this.root){
+        if(!callback || typeof callback !== 'function'){
+            throw new Error('A callback function is required');
+        }
+        if (node == null){
+            return;
+        }
+    
+        this.inOrder(callback, node.left);
+        callback(node.data);
+        this.inOrder(callback, node.right);
     }
 
-    preOrder(callback){
-
+    preOrder(callback, node = this.root){
+        if(!callback || typeof callback !== 'function'){
+            throw new Error('A callback function is required');
+        }
+        if (node == null){
+            return;
+        }
+        callback(node.data);
+        this.preOrder(callback, node.left);
+        this.preOrder(callback, node.right);
     }
 
-    postOrder(callback){
-
+    postOrder(callback, node = this.root){
+        if(!callback || typeof callback !== 'function'){
+            throw new Error('A callback function is required');
+        }
+        if (node == null){
+            return;
+        }
+        
+        this.postOrder(callback, node.left);
+        this.postOrder(callback, node.right);
+        callback(node.data);
     }
 
     height(node){
-
+        if (node === null) {
+            return -1;
+        }
+        
+        let leftHeight = this.height(node.left);   // Get height of left subtree
+        let rightHeight = this.height(node.right); // Get height of right subtree
+        
+        return Math.max(leftHeight, rightHeight) + 1;  // Add 1 for current node
     }
 
-    depth(node){
-
+    depth(node, root = this.root, level = 0){
+        if (root === null) {
+            return -1;  // Node not found
+        }
+        
+        if (root === node) {
+            return level;  // Found the node, return current level
+        }
+        
+        // Search left subtree
+        let leftDepth = this.depth(node, root.left, level + 1);
+        if (leftDepth !== -1) {
+            return leftDepth;
+        }
+        
+        // If not in left subtree, search right subtree
+        return this.depth(node, root.right, level + 1);
     }
 
-    isBalanded(){
-
+    isBalanced(node = this.root) {
+        // Base case: an empty tree is balanced
+        if (node === null) {
+            return true;
+        }
+        
+        // Get heights of left and right subtrees
+        let leftHeight = this.height(node.left);
+        let rightHeight = this.height(node.right);
+        
+        // Check if current node is balanced AND recursively check subtrees
+        return (Math.abs(leftHeight - rightHeight) <= 1) && 
+               this.isBalanced(node.left) && 
+               this.isBalanced(node.right);
     }
 
-    rebalance(){
-
+    rebalance() {
+        // Get array of all values in order
+        const values = [];
+        this.inOrder((value) => values.push(value));
+        this.root = this.buildTree(values);
     }
 }

@@ -5,5 +5,4 @@ const tree1 = new Tree(array1);
 tree1.prettyPrint(tree1.root);
 tree1.insert(8);
 tree1.prettyPrint(tree1.root);
-tree1.deleteItem(6);
-tree1.prettyPrint(tree1.root);
+tree1.levelOrder((value) => console.log(value)); 

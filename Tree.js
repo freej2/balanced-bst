@@ -108,7 +108,24 @@ export default class Tree {
     }
 
     levelOrder(callback){
-
+        let queue = [];
+        if(!callback || typeof callback !== 'function'){
+            throw new Error('A callback function is required');
+        }
+        if (this.root == null){
+            return;
+        }
+        queue.push(this.root);
+        while (queue.length > 0){
+            let currentNode = queue.shift();
+            callback(currentNode.data);
+            if(currentNode.left != null){
+                queue.push(currentNode.left);
+            }
+            if(currentNode.right != null){
+                queue.push(currentNode.right);
+            }
+        }
     }
 
     inOrder(callback){
